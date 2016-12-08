@@ -13,9 +13,9 @@
 #include <float.h>
 #include <lemon/list_graph.h>
 #include "mygraphlib.h"
-#include "gurobi_c++.h"
 #include "lpdtspalgs.h"
 #include "time.h"
+#include "gurobi_c++.h"
 
 bool naive(const LpdTspInstance &l, LpdTspSolution  &s, int tl);
 
@@ -157,9 +157,9 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	// Associa um vertice a uma posicao
 
 	k = 0;
-	NodeIntMap nodes(l.g);
+	DNodeIntMap nodes(l.g);
 
-	for (ListGraph::NodeIt n(l.g); n != INVALID; ++n)
+	for (DNodeIt n(l.g); n != INVALID; ++n)
 		nodes[n] = k++;		
 
 	// Acha uma solução inicial com heurística construtiva
@@ -273,7 +273,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (i = 1; i < l.n; i++)
 		for (j = 1; j < l.n; j++)
 			if (i != j)
-				model.addConstr(U[i] - U[j] + l.n * X[i][j] <= l.n - 1, "")
+				model.addConstr(U[i] - U[j] + l.n * X[i][j] <= l.n - 1, "");
 	
 	// Objetivo: Min Cdepot
 		
