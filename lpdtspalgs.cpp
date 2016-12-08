@@ -149,8 +149,45 @@ bool metaHeur(const LpdTspInstance &l, LpdTspSolution  &s, int tl)
 //------------------------------------------------------------------------------
 bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
+	int k;
+	LpdTspSolution sol;
 
+	// Associa um vertice a uma posicao
 
+	k = 0;
+	NodeIntMap nodes(gd.g);
+
+	for (ListGraph::NodeIt n(gd.g); n != INVALID; ++n)
+		nodes[n] = k++;		
+
+	// Acha uma solução inicial com heurística construtiva
+
+	constrHeur(l,&sol,tl);
+
+	// Inicializa o modelo
+
+	lowerBound = 1;
+	upperBound = sol.cost + 1;
+	GRBEnv env = GRBEnv();
+	GRBModel model = GRBModel(env);
+	model.set(GRB_StringAttr_ModelName, "LpdTsp");
+	model.getEnv().set(GRB_DoubleParam_TimeLimit, tl);
+	model.getEnv().set(GRB_DoubleParam_Cutoff, upperBound);
+
+	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
+	// Wij é o custo da aresta (i,j)
+	// Ci é o custo das arestas para ir do depósito até o vértice i
+	// Bi é o peso do item que o vértice i adiciona ou retira do veículo
+	// Aij é o peso dos itens carregados na aresta (i,j)
+	
+	// Obj: Min Cdepot
+	// (1): Aij - Ajk = Bj 
+	// (2): Aij <= Capacidade 
+	// (3): Cj >= Ci + Wij
+	// (4): Ct > Cs
+	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
 	return false;
 
