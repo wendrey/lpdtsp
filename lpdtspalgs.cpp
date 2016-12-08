@@ -176,7 +176,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	model.getEnv().set(GRB_DoubleParam_TimeLimit, tl);
 	model.getEnv().set(GRB_DoubleParam_Cutoff, upperBound);
 		
-	// Ci é o custo das arestas para ir do depósito até o vértice i
+/*	// Ci é o custo das arestas para ir do depósito até o vértice i
 
 	GRBVar* C = new GRBVar[l.n];
 
@@ -281,7 +281,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	model.update();
 	model.optimize();
 
-	return false;
+*/	return false;
 
 }
 //------------------------------------------------------------------------------
