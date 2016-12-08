@@ -177,7 +177,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	model.getEnv().set(GRB_DoubleParam_TimeLimit, tl);
 	model.getEnv().set(GRB_DoubleParam_Cutoff, upperBound);
 		
-/*	// Ci é o custo das arestas para ir do depósito até o vértice i
+	// Ci é o custo das arestas para ir do depósito até o vértice i
 
 	GRBVar* C = new GRBVar[l.n];
 
@@ -211,7 +211,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (i = 0; i < l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
-	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+/*	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
