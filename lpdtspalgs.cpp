@@ -149,15 +149,16 @@ bool metaHeur(const LpdTspInstance &l, LpdTspSolution  &s, int tl)
 //------------------------------------------------------------------------------
 bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
-	int k;
+	int i, j, k;
+	int M = DBL_MAX;
 	LpdTspSolution sol;
 
 	// Associa um vertice a uma posicao
 
 	k = 0;
-	NodeIntMap nodes(gd.g);
+	NodeIntMap nodes(l.g);
 
-	for (ListGraph::NodeIt n(gd.g); n != INVALID; ++n)
+	for (ListGraph::NodeIt n(l.g); n != INVALID; ++n)
 		nodes[n] = k++;		
 
 	// Acha uma solução inicial com heurística construtiva
@@ -173,22 +174,112 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	model.set(GRB_StringAttr_ModelName, "LpdTsp");
 	model.getEnv().set(GRB_DoubleParam_TimeLimit, tl);
 	model.getEnv().set(GRB_DoubleParam_Cutoff, upperBound);
+		
+	// Ci é o custo das arestas para ir do depósito até o vértice i
+
+	GRBVar* C = new GRBVar[l.g.n];
+
+	for (i = 0; i < l.g.n; i++)
+		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
+
+	// Aij é o peso dos itens carregados na aresta (i,j)
+
+	GRBVar** A = new GRBVar*[l.g.n];
+
+	for (i = 0; i < l.g.n; i++)
+		A[i] = new GRBVar[l.g.n];
+
+	for (EdgeIt e(l.g); e != INVALID; ++e)
+		A[node[l.g.u(e)]][node[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
 	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
-	// Wij é o custo da aresta (i,j)
-	// Ci é o custo das arestas para ir do depósito até o vértice i
-	// Bi é o peso do item que o vértice i adiciona ou retira do veículo
-	// Aij é o peso dos itens carregados na aresta (i,j)
+
+	GRBVar** X = new GRBVar*[l.g.n];	
 	
-	// Obj: Min Cdepot
-	// (1): Aij - Ajk = Bj 
-	// (2): Aij <= Capacidade 
-	// (3): Cj >= Ci + Wij
-	// (4): Ct > Cs
+	for (i = 0; i < l.g.n; i++)
+		X[i] = new GRBVar[l.g.n];
+		
+	for (EdgeIt e(l.g); e != INVALID; ++e) 
+		X[node[l.g.u(e)]][node[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+		
+	// Ui é auxiliar usada para que haja apena um tour
+	
+	GRBVar* U = new GRBVar[l.g.n];
+	
+	for (i = 0; i < l.g.n; i++)
+		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
+		
+	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+	
+	for (DNodeIt n(l.g); n != INVALID; ++n) {
+		for (InArcIt in(l.g, n); in != INVALID; ++in) {
+			for (OutArcIt out(l.g, n); out != INVALID; ++out) {
+				i = nodes[l.g.source(in)];
+				j = nodes[l.g.target(out)];
+				k = nodes[n];
+				GRBLinExpr expr = (2 - X[i][k] - X[k][j]) * M;
+				if (l.s[n] > 0) {
+					double b = l.items[l.s[n]-1].w;
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "");
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "");
+				}
+				if (l.t[n] > 0) {
+					double b = -l.items[l.t[n]-1].w;
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "");
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "");
+				}
+			}
+		}
+	}
+	
+	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+	
+	for (EdgeIt e(l.g); e != INVALID; ++e)
+		model.addConstr(A[node[l.g.u(e)]][node[l.g.v(e)]] <= l.capacity * X[l.g.u(e)]][l.g.v(e)]], "");
+			
+	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+	
+	for (EdgeIt e(l.g); e != INVALID; ++e) {
+		GRBLinExpr expr = (2 - X[node[l.g.u(e)]][node[l.g.v(e)]]) * M;
+		model.addConstr(C[node[l.g.v(e)]] + expr >= C[node[l.g.u(e)]] + l.g.weight[e], "");	
+	}
+			
+	// (4): Ct > Cs, para todo par (s,t) de um item
+	
+	for (k = 0; k < l.k; k++)
+		model.addConstr(C[node[l.items[k].t]] > C[node[l.items[k].s]], "");
+	
 	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+
+	for (DNodeIt n(l.g); n != INVALID; ++n) {
+		GRBLinExpr expr = 0;
+		for (OutArcIt out(l.g, n); out != INVALID; ++out)
+			expr += X[nodes[n]][nodes[l.g.target(out)]];
+		model.addConstr(expr == 1, "");
+	}		
+		
 	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+
+	for (DNodeIt n(l.g); n != INVALID; ++n) {
+		GRBLinExpr expr = 0;
+		for (InArcIt in(l.g, n); in != INVALID; ++in)
+			expr += X[nodes[l.g.source(in)]][nodes[n]];
+		model.addConstr(expr == 1, "");
+	}		
+	
 	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
+	for (i = 1; i < l.g.n; i++)
+		for (j = 1; j < l.g.n; j++)
+			if (i != j)
+				model.addConstr(U[i] - U[j] + l.g.n * X[i][j] <= l.g.n - 1, "")
+	
+	// Objetivo: Min Cdepot
+		
+	model.setObjective(C[l.depot], GRB_MINIMIZE);
+	model.update();
+	model.optimize();
+
 	return false;
 
 }
