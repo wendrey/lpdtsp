@@ -13,6 +13,7 @@
 #include <float.h>
 #include <lemon/list_graph.h>
 #include "mygraphlib.h"
+#include "gurobi_c++.h"
 #include "lpdtspalgs.h"
 #include "time.h"
 
