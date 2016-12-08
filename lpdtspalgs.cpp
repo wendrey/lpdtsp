@@ -152,6 +152,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
 	int i, j, k;
 	double M = DBL_MAX;
+	double lowerBound, upperBound;
 	LpdTspSolution sol;
 
 	// Associa um vertice a uma posicao
@@ -164,7 +165,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
 	// Acha uma solução inicial com heurística construtiva
 
-	constrHeur(l,&sol,tl);
+	constrHeur(l,sol,tl);
 
 	// Inicializa o modelo
 
