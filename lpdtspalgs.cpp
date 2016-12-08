@@ -247,8 +247,8 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 			
 	// (4): Ct > Cs, para todo par (s,t) de um item
 	
-	for (k = 0; k < l.k; k++)
-		model.addConstr(C[nodes[l.items[k].t]] > C[nodes[l.items[k].s]], "");
+	for (k = 1; k <= l.k; k++)
+		model.addConstr(C[nodes[l.items[k].s]] < C[nodes[l.items[k].t]], "");
 	
 	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
@@ -277,7 +277,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// Objetivo: Min Cdepot
 		
-	model.setObjective(C[l.depot], GRB_MINIMIZE);
+	model.setObjective(C[nodes[l.depot]], GRB_MINIMIZE);
 	model.update();
 	model.optimize();
 
