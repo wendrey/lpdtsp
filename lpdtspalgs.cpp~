@@ -150,7 +150,7 @@ bool metaHeur(const LpdTspInstance &l, LpdTspSolution  &s, int tl)
 bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
 	int i, j, k;
-	int M = DBL_MAX;
+	double M = DBL_MAX;
 	LpdTspSolution sol;
 
 	// Associa um vertice a uma posicao
@@ -177,36 +177,36 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 		
 	// Ci é o custo das arestas para ir do depósito até o vértice i
 
-	GRBVar* C = new GRBVar[l.g.n];
+	GRBVar* C = new GRBVar[l.n];
 
-	for (i = 0; i < l.g.n; i++)
+	for (i = 0; i < l.n; i++)
 		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
 
 	// Aij é o peso dos itens carregados na aresta (i,j)
 
-	GRBVar** A = new GRBVar*[l.g.n];
+	GRBVar** A = new GRBVar*[l.n];
 
-	for (i = 0; i < l.g.n; i++)
-		A[i] = new GRBVar[l.g.n];
+	for (i = 0; i < l.n; i++)
+		A[i] = new GRBVar[l.n];
 
 	for (EdgeIt e(l.g); e != INVALID; ++e)
 		A[node[l.g.u(e)]][node[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
 	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
 
-	GRBVar** X = new GRBVar*[l.g.n];	
+	GRBVar** X = new GRBVar*[l.n];	
 	
-	for (i = 0; i < l.g.n; i++)
-		X[i] = new GRBVar[l.g.n];
+	for (i = 0; i < l.n; i++)
+		X[i] = new GRBVar[l.n];
 		
 	for (EdgeIt e(l.g); e != INVALID; ++e) 
 		X[node[l.g.u(e)]][node[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 		
 	// Ui é auxiliar usada para que haja apena um tour
 	
-	GRBVar* U = new GRBVar[l.g.n];
+	GRBVar* U = new GRBVar[l.n];
 	
-	for (i = 0; i < l.g.n; i++)
+	for (i = 0; i < l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
 	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
@@ -269,10 +269,10 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
-	for (i = 1; i < l.g.n; i++)
-		for (j = 1; j < l.g.n; j++)
+	for (i = 1; i < l.n; i++)
+		for (j = 1; j < l.n; j++)
 			if (i != j)
-				model.addConstr(U[i] - U[j] + l.g.n * X[i][j] <= l.g.n - 1, "")
+				model.addConstr(U[i] - U[j] + l.n * X[i][j] <= l.n - 1, "")
 	
 	// Objetivo: Min Cdepot
 		
