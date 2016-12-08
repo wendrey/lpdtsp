@@ -191,7 +191,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 		A[i] = new GRBVar[l.n];
 
 	for (EdgeIt e(l.g); e != INVALID; ++e)
-		A[node[l.g.u(e)]][node[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+		A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
 	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
 
@@ -201,7 +201,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 		X[i] = new GRBVar[l.n];
 		
 	for (EdgeIt e(l.g); e != INVALID; ++e) 
-		X[node[l.g.u(e)]][node[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+		X[nodes[l.g.u(e)]][nodes[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 		
 	// Ui é auxiliar usada para que haja apena um tour
 	
@@ -236,19 +236,19 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (EdgeIt e(l.g); e != INVALID; ++e)
-		model.addConstr(A[node[l.g.u(e)]][node[l.g.v(e)]] <= l.capacity * X[l.g.u(e)]][l.g.v(e)]], "");
+		model.addConstr(A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] <= l.capacity * X[l.g.u(e)]][l.g.v(e)]], "");
 			
 	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
 	for (EdgeIt e(l.g); e != INVALID; ++e) {
-		GRBLinExpr expr = (2 - X[node[l.g.u(e)]][node[l.g.v(e)]]) * M;
-		model.addConstr(C[node[l.g.v(e)]] + expr >= C[node[l.g.u(e)]] + l.g.weight[e], "");	
+		GRBLinExpr expr = (2 - X[nodes[l.g.u(e)]][nodes[l.g.v(e)]]) * M;
+		model.addConstr(C[nodes[l.g.v(e)]] + expr >= C[nodes[l.g.u(e)]] + l.g.weight[e], "");	
 	}
 			
 	// (4): Ct > Cs, para todo par (s,t) de um item
 	
 	for (k = 0; k < l.k; k++)
-		model.addConstr(C[node[l.items[k].t]] > C[node[l.items[k].s]], "");
+		model.addConstr(C[nodes[l.items[k].t]] > C[nodes[l.items[k].s]], "");
 	
 	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
