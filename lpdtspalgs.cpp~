@@ -150,6 +150,8 @@ bool metaHeur(const LpdTspInstance &l, LpdTspSolution  &s, int tl)
 //------------------------------------------------------------------------------
 bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
+try {
+
 	int i, j, k;
 	double M = DBL_MAX;
 	double lowerBound, upperBound;
@@ -314,7 +316,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	while (s.tour.size() < (unsigned) l.n) 
 		for (OutArcIt e(l.g, s.tour.back()); e != INVALID; ++e) 
-			if (x[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
+			if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
 				s.tour.push_back(l.g.target(e));
 
 	sol.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
@@ -326,6 +328,17 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
 	return false;
 
+}
+
+catch (GRBException e) {
+
+	cout << "Error code : " << e.getErrorCode() << endl;
+	cout << e.getMessage() << endl;
+
+}
+	
+return colorNaive(gd, color, lowerBound, upperBound, timeLimit);
+	
 }
 
 //------------------------------------------------------------------------------

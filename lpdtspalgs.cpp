@@ -150,6 +150,8 @@ bool metaHeur(const LpdTspInstance &l, LpdTspSolution  &s, int tl)
 //------------------------------------------------------------------------------
 bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
+try {
+
 	int i, j, k;
 	double M = DBL_MAX;
 	double lowerBound, upperBound;
@@ -326,6 +328,17 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
 	return false;
 
+}
+
+catch (GRBException e) {
+
+	cout << "Error code : " << e.getErrorCode() << endl;
+	cout << e.getMessage() << endl;
+
+}
+	
+return colorNaive(gd, color, lowerBound, upperBound, timeLimit);
+	
 }
 
 //------------------------------------------------------------------------------
