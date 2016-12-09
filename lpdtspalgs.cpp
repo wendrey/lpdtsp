@@ -278,16 +278,20 @@ try {
 	for (k = 0; k < l.k; k++)
 		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
 	
-/*	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
-		for (OutArcIt out(l.g, n); out != INVALID; ++out)
-			expr += X[nodes[n]][nodes[l.g.target(out)]];
+		for (OutArcIt out(l.g, n); out != INVALID; ++out) {
+			if (l.g.target(out) != l.depot)
+				expr += X[nodes[n]][nodes[l.g.target(out)]];
+			else
+				expr += X[nodes[n]][l.n];
+		}
 		model.addConstr(expr == 1, "");
 	}		
 		
-/*	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;

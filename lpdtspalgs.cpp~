@@ -282,8 +282,12 @@ try {
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
-		for (OutArcIt out(l.g, n); out != INVALID; ++out)
-			expr += X[nodes[n]][nodes[l.g.target(out)]];
+		for (OutArcIt out(l.g, n); out != INVALID; ++out) {
+			if (l.g.target(out) != l.depot)
+				expr += X[nodes[n]][nodes[l.g.target(out)]];
+			else
+				expr += X[nodes[n]][l.n];
+		}
 		model.addConstr(expr == 1, "");
 	}		
 		
