@@ -275,7 +275,7 @@ try {
 			
 	// (4): Ct > Cs, para todo par (s,t) de um item
 	
-//	for (k = 1; k <= l.k; k++)
+	for (k = 1; k <= l.k; k++)
 		cout << l.k << " " << l.n;
 //		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
 	
