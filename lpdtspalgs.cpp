@@ -275,7 +275,7 @@ try {
 		}
 	}
 			
-/*	// (4): Ct > Cs, para todo par (s,t) de um item
+	// (4): Ct > Cs, para todo par (s,t) de um item
 	
 	for (k = 1; k <= l.k; k++)
 		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
@@ -309,7 +309,7 @@ try {
 			if (i != j)
 				model.addConstr(U[i] - U[j] + (l.n + 1) * X[i][j] <= l.n, "");
 	
-	// Objetivo: Minimizar C
+/*	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
