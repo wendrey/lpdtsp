@@ -267,18 +267,18 @@ try {
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
 			GRBLinExpr expr = (1 - X[nodes[l.g.source(e)]][nodes[l.g.target(e)]]) * M;
-			model.addConstr(C[nodes[l.g.target(e)]] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "");	
+			model.addConstr(C[nodes[l.g.target(e)]] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "Custo_"+to_string(nodes[l.g.target(e)]));	
 		}
 		else {
 			GRBLinExpr expr = (1 - X[nodes[l.g.source(e)]][l.n]) * M;
-			model.addConstr(C[l.n] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "");				
+			model.addConstr(C[l.n] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "Custo_"+to_string(l.n));				
 		}
 	}
 			
 	// (4): Ct > Cs, para todo par (s,t) de um item
 	
 	for (k = 0; k < l.k; k++)
-		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
+		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "Item_"+to_string(k+1)+"_"+to_string(nodes[l.items[k].s])+"_"+to_string(nodes[l.items[k].t]));
 	
 	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
@@ -290,7 +290,7 @@ try {
 			else
 				expr += X[nodes[n]][l.n];
 		}
-		model.addConstr(expr == 1, "");
+		model.addConstr(expr == 1, "In_"+to_string(nodes[n]));
 	}		
 		
 	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
@@ -303,7 +303,7 @@ try {
 			else
 				expr += X[nodes[l.g.source(in)]][l.n];		
 		}
-		model.addConstr(expr == 1, "");
+		model.addConstr(expr == 1, "Out_"+to_string(nodes[n]));
 	}		
 	
 /*	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
