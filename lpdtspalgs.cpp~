@@ -197,9 +197,9 @@ try {
 
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.target(e) != l.depot)
-			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "A_"+itoa(nodes[l.g.source(e)])+"_"+itoa(nodes[l.g.target(e)]));
+			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "A_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
 		else
-			A[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+			A[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "A_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 
 	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
 
@@ -210,16 +210,16 @@ try {
 		
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.target(e) != l.depot) 
-			X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+			X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "X_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
 		else
-			X[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");			
+			X[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "X_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));			
 		
 	// Ui é auxiliar usada para que haja apena um tour
 	
 	GRBVar* U = new GRBVar[l.n + 1];
 	
 	for (i = 0; i <= l.n; i++)
-		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
+		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "U_"+to_string(i));
 		
 /*	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
