@@ -235,13 +235,13 @@ try {
 				GRBLinExpr expr = (2 - X[i][k] - X[k][j]) * M;
 				if (l.s[n] > 0) {
 					double b = l.items[l.s[n]-1].w;
-					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"++to_string(k));
-					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"++to_string(k));
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"+to_string(k));
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"+to_string(k));
 				}
 				else if (l.t[n] > 0) {
 					double b = -l.items[l.t[n]-1].w;
-					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"++to_string(k));
-					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"++to_string(k));
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"+to_string(k));
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(j)+"_"+to_string(k));
 				}
 			}
 		}
