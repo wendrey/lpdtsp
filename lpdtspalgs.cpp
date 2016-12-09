@@ -191,7 +191,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (i = 0; i < l.n; i++)
 		A[i] = new GRBVar[l.n];
 
-	for (EdgeIt e(l.g); e != INVALID; ++e)
+	for (ArcIt e(l.g); e != INVALID; ++e)
 		A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
 /*	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
