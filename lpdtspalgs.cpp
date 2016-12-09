@@ -273,12 +273,12 @@ try {
 		}
 	}
 			
-/*	// (4): Ct > Cs, para todo par (s,t) de um item
+	// (4): Ct > Cs, para todo par (s,t) de um item
 	
 	for (k = 1; k <= l.k; k++)
 		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
 	
-	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+/*	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
