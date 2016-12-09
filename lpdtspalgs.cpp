@@ -281,11 +281,11 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// Objetivo: Min Cdepot
 		
-/*	model.setObjective(C[nodes[l.depot]], GRB_MINIMIZE);
+	model.setObjective(C[nodes[l.depot]], GRB_MINIMIZE);
 	model.update();
 	model.optimize();
 
-*/	return false;
+	return false;
 
 }
 //------------------------------------------------------------------------------
