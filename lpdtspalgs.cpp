@@ -239,7 +239,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		i = nodes[l.g.source(e)];
 		j = nodes[l.g.target(e)];
-		model.addConstr(A[i][j] <= l.capacity * X[i]][j], "");
+		model.addConstr(A[i][j] <= l.capacity * X[i][j], "");
 	}
 	
 	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
