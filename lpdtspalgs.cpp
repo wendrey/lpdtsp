@@ -192,7 +192,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 		A[i] = new GRBVar[l.n];
 
 	for (ArcIt e(l.g); e != INVALID; ++e)
-		A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+		A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
 /*	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
 
