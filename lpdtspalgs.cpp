@@ -221,6 +221,7 @@ try {
 		
 	// Objetivo: Minimizar C
 	
+	model.update();
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);
 
