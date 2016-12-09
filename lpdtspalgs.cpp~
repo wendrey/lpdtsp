@@ -184,7 +184,7 @@ try {
 	GRBVar* C = new GRBVar[l.n + 1];
 
 	for (i = 0; i <= l.n; i++)
-		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
+		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "C_"+i);
 
 	// Aij é o peso dos itens carregados na aresta (i,j)
 
@@ -315,7 +315,7 @@ try {
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
-	model.write(debug.lp);
+	model.write("debug.lp");
 	model.optimize();
 
 /*	// Atribui solução

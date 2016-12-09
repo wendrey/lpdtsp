@@ -184,7 +184,7 @@ try {
 	GRBVar* C = new GRBVar[l.n + 1];
 
 	for (i = 0; i <= l.n; i++)
-		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
+		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "C_"+i);
 
 	// Aij é o peso dos itens carregados na aresta (i,j)
 
@@ -195,7 +195,7 @@ try {
 
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.target(e) != l.depot)
-			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
+			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "A_"+nodes[l.g.source(e)]+"_"+nodes[l.g.target(e)]);
 		else
 			A[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
