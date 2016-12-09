@@ -281,7 +281,8 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// Objetivo: Min Cdepot
 		
-	model.setObjective(C[nodes[l.depot]], GRB_MINIMIZE);
+	GRBLinExpr obj = C[nodes[l.depot]];
+	model.setObjective(obj, GRB_MINIMIZE);
 	model.update();
 	model.optimize();
 
