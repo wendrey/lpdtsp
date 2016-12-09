@@ -153,7 +153,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 try {
 
 	int i, j, k;
-	double M = DBL_MAX;
+	double M = 10 * l.n;
 	double lowerBound, upperBound;
 	LpdTspSolution sol;
 
