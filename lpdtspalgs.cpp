@@ -315,7 +315,7 @@ try {
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
-	model.write(debug.lp);
+	model.write("debug.lp");
 	model.optimize();
 
 /*	// Atribui solução
