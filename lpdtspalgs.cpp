@@ -304,7 +304,7 @@ try {
 	
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
-			model.addConstr(U[i] - U[j] + (l.n + 1) * X[i][j] <= l.n, "");
+			model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][[nodesl.g.target(e)]] <= l.n, "");
 	
 /*	// Objetivo: Minimizar C
 	
