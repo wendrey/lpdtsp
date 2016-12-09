@@ -184,7 +184,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (i = 0; i < l.n; i++)
 		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
 
-/*	// Aij é o peso dos itens carregados na aresta (i,j)
+	// Aij é o peso dos itens carregados na aresta (i,j)
 
 	GRBVar** A = new GRBVar*[l.n];
 
@@ -194,7 +194,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (EdgeIt e(l.g); e != INVALID; ++e)
 		A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
-	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
+/*	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
 
 	GRBVar** X = new GRBVar*[l.n];	
 	
