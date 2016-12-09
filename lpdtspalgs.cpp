@@ -244,7 +244,7 @@ try {
 		}
 	}
 	
-/*	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		i = nodes[l.g.source(e)];
@@ -271,7 +271,7 @@ try {
 		}
 	}
 			
-	// (4): Ct > Cs, para todo par (s,t) de um item
+/*	// (4): Ct > Cs, para todo par (s,t) de um item
 	
 	for (k = 1; k <= l.k; k++)
 		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
