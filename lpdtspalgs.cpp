@@ -219,7 +219,7 @@ try {
 	for (i = 0; i <= l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
-	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+/*	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
@@ -260,7 +260,7 @@ try {
 	for (OutArcIt e(l.g, l.depot); e != INVALID; ++e)
 		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "");
 	
-	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+*/	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
@@ -278,7 +278,7 @@ try {
 	for (k = 0; k < l.k; k++)
 		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
 	
-/*	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
@@ -291,7 +291,7 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 		
-/*	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
@@ -304,17 +304,18 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 	
-*/	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
+/*	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
 			model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "");
 	
-	// Objetivo: Minimizar C
+*/	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
+	model.write(debug.lp);
 	model.optimize();
 
 /*	// Atribui solução
