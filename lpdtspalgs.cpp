@@ -221,7 +221,7 @@ try {
 	for (i = 0; i <= l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "U_"+to_string(i));
 		
-/*	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
@@ -247,7 +247,7 @@ try {
 		}
 	}
 	
-*/	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot)
@@ -306,13 +306,13 @@ try {
 		model.addConstr(expr == 1, "In_"+to_string(nodes[n]));
 	}		
 	
-/*	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
+	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
 			model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "Tour_"+to_string(nodes[l.g.source(e)])+to_string(nodes[l.g.target(e)]));
 	
-*/	// Objetivo: Minimizar C
+	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
