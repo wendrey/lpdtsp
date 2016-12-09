@@ -16,6 +16,7 @@
 #include "lpdtspalgs.h"
 #include "time.h"
 #include "gurobi_c++.h"
+#include <string.h>
 
 bool naive(const LpdTspInstance &l, LpdTspSolution  &s, int tl);
 
@@ -195,7 +196,7 @@ try {
 
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.target(e) != l.depot)
-			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "A_"+nodes[l.g.source(e)]+"_"+nodes[l.g.target(e)]);
+			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "A_"+itoa(nodes[l.g.source(e)])+"_"+itoa(nodes[l.g.target(e)]));
 		else
 			A[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 
