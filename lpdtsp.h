@@ -128,6 +128,7 @@ SOLUTION_STATUS checkSolutionStatus(LpdTspInstance &instance,
 string          decodeSolutionStatus(SOLUTION_STATUS solutionStatus);
 void            solutionAsGraphical(LpdTspInstance &l, LpdTspSolution  &s, string inputFile);
 string          instanceAsString(LpdTspInstance &lpdTspInstance);
+string          instanceDescriptionAsString(LpdTspInstance &instance);
 string          dnodesAndItemsAsString(LpdTspInstance &l);
 string          arcsAndItemsAsString(LpdTspInstance &l);
 inline string   vti(DNode v, LpdTspInstance &l);

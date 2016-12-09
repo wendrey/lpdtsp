@@ -55,9 +55,13 @@ int main(int argc, char *argv[])
    // Initialize a solution
    LpdTspSolution ts;
    
-   if(params.verbosity == VERB || params.verbosity == GRAPH){
+   if(params.verbosity == VERB){  // if(params.verbosity == VERB || params.verbosity == GRAPH){
       cout << "INPUT" << endl;
       cout << instanceAsString(l) << endl;
+   }
+   else if(params.verbosity == GRAPH){
+      cout << "INPUT" << endl;
+      cout << instanceDescriptionAsString(l) << endl;
    }
    
    double  elapsedTime = DBL_MAX;
@@ -577,7 +581,7 @@ string decodeSolutionStatus(SOLUTION_STATUS solutionStatus)
    return ss.str();
 }
 //------------------------------------------------------------------------------
-string instanceAsString(LpdTspInstance &instance)
+string instanceDescriptionAsString(LpdTspInstance &instance)
 {
    stringstream ss;
    
@@ -586,6 +590,15 @@ string instanceAsString(LpdTspInstance &instance)
    ss << "k          : " << instance.k << endl;
    ss << "capacity   : " << instance.capacity << endl;
    ss << "depot      : " << instance.vname[instance.depot] << endl;
+   
+   return ss.str();
+}
+//------------------------------------------------------------------------------
+string instanceAsString(LpdTspInstance &instance)
+{
+   stringstream ss;
+   
+   ss << instanceDescriptionAsString(instance);
    ss << dnodesAndItemsAsString(instance);
    ss << arcsAndItemsAsString(instance);
    ss << itemsAsString(instance);
@@ -644,11 +657,7 @@ string itemsAsString(LpdTspInstance &instance)
 string solutionAsString(LpdTspInstance &instance, LpdTspSolution  &sol)
 {
    stringstream ss;
-   ss << "n          : " << instance.n << endl;
-   ss << "m          : " << instance.m << endl;
-   ss << "k          : " << instance.k << endl;
-   ss << "capacity   : " << instance.capacity << endl;
-   ss << "depot      : " << instance.vname[instance.depot] << endl;
+   ss << instanceDescriptionAsString(instance);
    ss << valuesAsString(sol);
    ss << tourAsString(instance, sol);
    ss << tourAndItemsAsString(instance, sol);
