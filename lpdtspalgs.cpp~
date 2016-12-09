@@ -337,7 +337,7 @@ catch (GRBException e) {
 
 }
 	
-return colorNaive(gd, color, lowerBound, upperBound, timeLimit);
+return naive(l, sol, tl);
 	
 }
 
