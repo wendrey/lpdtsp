@@ -304,13 +304,13 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 	
-/*	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
+*/	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
 			model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "");
 	
-*/	// Objetivo: Minimizar C
+	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
