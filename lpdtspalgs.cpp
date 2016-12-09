@@ -224,7 +224,7 @@ try {
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);
 
-	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+/*	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
@@ -329,7 +329,7 @@ try {
 	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
 		return true;	
 
-	return false;
+*/	return false;
 
 }
 
