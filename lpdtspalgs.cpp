@@ -253,7 +253,7 @@ try {
 		if (l.g.target(e) != l.depot)
 			model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
 		else
-			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "Capacidade_"+to_string(l.g.source(e))+"_"+to_string(l.n));
+			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 	}
 	
 	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
