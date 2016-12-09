@@ -334,7 +334,7 @@ try {
 
 	s.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
 	s.upperBound = model.get(GRB_DoubleAttr_ObjVal);
-	s.cost = upperBound;
+	s.cost = s.upperBound;
 
 /*	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
 		return true;	

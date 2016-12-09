@@ -322,7 +322,7 @@ try {
 	model.write("debug.lp");
 	model.optimize();
 
-/*	// Atribui solução
+	// Atribui solução
 
 	s.tour.push_back(l.depot);
 	
@@ -336,7 +336,7 @@ try {
 	s.upperBound = model.get(GRB_DoubleAttr_ObjVal);
 	s.cost = upperBound;
 
-	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
+/*	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
 		return true;	
 
 */	return false;
