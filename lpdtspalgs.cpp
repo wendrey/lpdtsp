@@ -326,14 +326,14 @@ try {
 			if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
 				s.tour.push_back(l.g.target(e));
 
-	s.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
+*/	s.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
 	s.upperBound = model.get(GRB_DoubleAttr_ObjVal);
 	s.cost = upperBound;
 
 	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
 		return true;	
 
-*/	return false;
+	return false;
 
 }
 
