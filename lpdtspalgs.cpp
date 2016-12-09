@@ -225,10 +225,11 @@ try {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
 			for (OutArcIt out(l.g, n); out != INVALID; ++out) {
 				i = nodes[l.g.source(in)];
-				j = nodes[l.g.target(out)];
-				k = nodes[n];
-				if (l.g.target(out) == l.depot)
+				if (l.g.target(out) != l.depot)
+					j = nodes[l.g.target(out)];
+				else
 					j = l.n;
+				k = nodes[n];
 				GRBLinExpr expr = (2 - X[i][k] - X[k][j]) * M;
 				if (l.s[n] > 0) {
 					double b = l.items[l.s[n]-1].w;
@@ -248,7 +249,10 @@ try {
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		i = nodes[l.g.source(e)];
-		j = nodes[l.g.target(e)];
+		if (l.g.target(out) != l.depot)
+			j = nodes[l.g.target(out)];
+		else
+			j = l.n;
 		model.addConstr(A[i][j] <= l.capacity * X[i][j], "");
 	}
 	
