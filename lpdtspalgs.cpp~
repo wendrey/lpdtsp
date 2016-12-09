@@ -186,7 +186,7 @@ try {
 	GRBVar* C = new GRBVar[l.n + 1];
 
 	for (i = 0; i <= l.n; i++)
-		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "C_"+i);
+		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "C_"+to_string(i));
 
 	// Aij é o peso dos itens carregados na aresta (i,j)
 
