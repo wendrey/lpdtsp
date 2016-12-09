@@ -211,7 +211,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	for (i = 0; i < l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
-/*	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
@@ -236,14 +236,14 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
-	for (EdgeIt e(l.g); e != INVALID; ++e)
-		model.addConstr(A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] <= l.capacity * X[l.g.u(e)]][l.g.v(e)]], "");
+	for (ArcIt e(l.g); e != INVALID; ++e)
+		model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[l.g.source(e)]][l.g.target(e)]], "");
 			
 	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
-	for (EdgeIt e(l.g); e != INVALID; ++e) {
-		GRBLinExpr expr = (2 - X[nodes[l.g.u(e)]][nodes[l.g.v(e)]]) * M;
-		model.addConstr(C[nodes[l.g.v(e)]] + expr >= C[nodes[l.g.u(e)]] + l.g.weight[e], "");	
+	for (ArcIt e(l.g); e != INVALID; ++e) {
+		GRBLinExpr expr = (1 - X[nodes[l.g.source(e)]][nodes[l.g.target(e)]]) * M;
+		model.addConstr(C[nodes[l.g.target(e)]] + expr >= C[nodes[l.g.source(e)]] + l.g.weight[e], "");	
 	}
 			
 	// (4): Ct > Cs, para todo par (s,t) de um item
@@ -278,7 +278,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// Objetivo: Min Cdepot
 		
-	model.setObjective(C[nodes[l.depot]], GRB_MINIMIZE);
+/*	model.setObjective(C[nodes[l.depot]], GRB_MINIMIZE);
 	model.update();
 	model.optimize();
 

@@ -236,14 +236,14 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 	
 	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
-	for (EdgeIt e(l.g); e != INVALID; ++e)
-		model.addConstr(A[nodes[l.g.u(e)]][nodes[l.g.v(e)]] <= l.capacity * X[l.g.u(e)]][l.g.v(e)]], "");
+	for (ArcIt e(l.g); e != INVALID; ++e)
+		model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[l.g.source(e)]][l.g.target(e)]], "");
 			
 	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
-	for (EdgeIt e(l.g); e != INVALID; ++e) {
-		GRBLinExpr expr = (2 - X[nodes[l.g.u(e)]][nodes[l.g.v(e)]]) * M;
-		model.addConstr(C[nodes[l.g.v(e)]] + expr >= C[nodes[l.g.u(e)]] + l.g.weight[e], "");	
+	for (ArcIt e(l.g); e != INVALID; ++e) {
+		GRBLinExpr expr = (1 - X[nodes[l.g.source(e)]][nodes[l.g.target(e)]]) * M;
+		model.addConstr(C[nodes[l.g.target(e)]] + expr >= C[nodes[l.g.source(e)]] + l.g.weight[e], "");	
 	}
 			
 	// (4): Ct > Cs, para todo par (s,t) de um item
