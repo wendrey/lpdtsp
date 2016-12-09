@@ -319,9 +319,9 @@ try {
 			if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
 				s.tour.push_back(l.g.target(e));
 
-	sol.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
-	sol.upperBound = model.get(GRB_DoubleAttr_ObjVal);
-	sol.cost = upperBound;
+	s.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
+	s.upperBound = model.get(GRB_DoubleAttr_ObjVal);
+	s.cost = upperBound;
 
 	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
 		return true;	
@@ -337,7 +337,7 @@ catch (GRBException e) {
 
 }
 	
-return naive(l, sol, tl);
+return naive(l, s, tl);
 	
 }
 
