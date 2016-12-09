@@ -278,7 +278,7 @@ try {
 	for (k = 0; k < l.k; k++)
 		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
 	
-	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+/*	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
@@ -291,9 +291,9 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 		
-	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+*/	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
 
-	for (DNodeIt n(l.g); n != INVALID; ++n) {
+/*	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
 			if (n != l.depot) 
@@ -304,20 +304,20 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 	
-	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
+*/	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
-	for (ArcIt e(l.g); e != INVALID; ++e)
+/*	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
 			model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "");
 	
-/*	// Objetivo: Minimizar C
+*/	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
 	model.optimize();
 
-	// Atribui solução
+/*	// Atribui solução
 
 	s.tour.push_back(l.depot);
 	
