@@ -304,7 +304,7 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 	
-/*	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
+	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)

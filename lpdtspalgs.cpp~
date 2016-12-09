@@ -291,7 +291,7 @@ try {
 		model.addConstr(expr == 1, "");
 	}		
 		
-/*	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
