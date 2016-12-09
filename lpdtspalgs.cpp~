@@ -249,7 +249,7 @@ try {
 		}
 	}
 	
-	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+/*	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot)
@@ -264,7 +264,7 @@ try {
 	for (OutArcIt e(l.g, l.depot); e != INVALID; ++e)
 		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "Capacidade_"+to_string(nodes[l.depot])+"_"+to_string(nodes[l.g.source(e)]));
 	
-*/	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
