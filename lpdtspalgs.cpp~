@@ -208,7 +208,7 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 		if (l.g.target(e) != l.depot) 
 			X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 		else
-			X[nodes[l.g.source(e)]][ln] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");			
+			X[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");			
 		
 	// Ui é auxiliar usada para que haja apena um tour
 	
@@ -312,8 +312,8 @@ bool exact(const LpdTspInstance &l, LpdTspSolution  &s, int tl) {
 
 	s.tour.push_back(l.depot);
 	
-	while (s.tour.size() < l.n) 
-		for (OutArcIt e(l.g); e != INVALID; ++e) 
+	while (s.tour.size() < (unsigned) l.n) 
+		for (OutArcIt e(l.g, s.tour.back()); e != INVALID; ++e) 
 			if (x[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
 				s.tour.push_back(l.g.target(e));
 
