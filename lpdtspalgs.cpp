@@ -258,13 +258,13 @@ try {
 			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 	}
 	
-/*	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
+	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
 		model.addConstr(A[nodes[l.g.source(e)]][l.n] == 0, "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 
 	for (OutArcIt e(l.g, l.depot); e != INVALID; ++e)
 		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "Capacidade_"+to_string(nodes[l.depot])+"_"+to_string(nodes[l.g.source(e)]));
 	
-*/	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
