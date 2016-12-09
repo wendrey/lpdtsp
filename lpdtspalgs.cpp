@@ -322,20 +322,21 @@ try {
 	model.write("debug.lp");
 	model.optimize();
 
-/*	// Atribui solução
+	// Atribui solução
 
 	s.tour.push_back(l.depot);
 	
 	while (s.tour.size() < (unsigned) l.n) 
-		for (OutArcIt e(l.g, s.tour.back()); e != INVALID; ++e) 
-			if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
-				s.tour.push_back(l.g.target(e));
+		for (OutArcIt e(l.g, s.tour.back()); e != INVALID; ++e)
+			if (l.g.target(e) != l.depot)
+				if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
+					s.tour.push_back(l.g.target(e));
 
 	s.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
 	s.upperBound = model.get(GRB_DoubleAttr_ObjVal);
 	s.cost = upperBound;
 
-	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
+/*	if (model.get(GRB_IntAttr_Status) == GRB_OPTIMAL)
 		return true;	
 
 */	return false;

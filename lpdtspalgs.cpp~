@@ -327,9 +327,10 @@ try {
 	s.tour.push_back(l.depot);
 	
 	while (s.tour.size() < (unsigned) l.n) 
-		for (OutArcIt e(l.g, s.tour.back()); e != INVALID; ++e) 
-			if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
-				s.tour.push_back(l.g.target(e));
+		for (OutArcIt e(l.g, s.tour.back()); e != INVALID; ++e)
+			if (l.g.target(e) != l.depot)
+				if (X[nodes[s.tour.back()]][nodes[l.g.target(e)]].get(GRB_DoubleAttr_X))
+					s.tour.push_back(l.g.target(e));
 
 	s.lowerBound = model.get(GRB_DoubleAttr_ObjBound);
 	s.upperBound = model.get(GRB_DoubleAttr_ObjVal);
