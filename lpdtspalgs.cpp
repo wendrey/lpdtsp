@@ -310,14 +310,14 @@ try {
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
 			model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "");
 	
-/*	// Objetivo: Minimizar C
+	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
 	model.optimize();
 
-	// Atribui solução
+/*	// Atribui solução
 
 	s.tour.push_back(l.depot);
 	
