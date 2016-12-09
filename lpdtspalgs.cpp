@@ -219,6 +219,11 @@ try {
 	for (i = 0; i <= l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
+	// Objetivo: Minimizar C
+	
+	GRBLinExpr obj = C[l.n];
+	model.setObjective(obj, GRB_MINIMIZE);
+
 	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
@@ -305,8 +310,6 @@ try {
 	
 	// Objetivo: Min C
 		
-	GRBLinExpr obj = C[l.n];
-	model.setObjective(obj, GRB_MINIMIZE);
 	model.update();
 	model.optimize();
 
