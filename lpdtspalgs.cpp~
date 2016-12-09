@@ -247,22 +247,22 @@ try {
 		}
 	}
 	
-	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+*/	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot)
-			model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]], "");
+			model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
 		else
-			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "");
+			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "Capacidade_"+to_string(l.g.source(e))+"_"+to_string(l.n));
 	}
 	
 	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
-		model.addConstr(A[nodes[l.g.source(e)]][l.n] == 0, "");
+		model.addConstr(A[nodes[l.g.source(e)]][l.n] == 0, "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 
 	for (OutArcIt e(l.g, l.depot); e != INVALID; ++e)
-		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "");
+		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "Capacidade_"+to_string(nodes[l.depot])+"_"+to_string(nodes[l.g.source(e)]));
 	
-*/	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
@@ -290,7 +290,7 @@ try {
 			else
 				expr += X[nodes[n]][l.n];
 		}
-		model.addConstr(expr == 1, "In_"+to_string(nodes[n]));
+		model.addConstr(expr == 1, "Out_"+to_string(nodes[n]));
 	}		
 		
 	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
@@ -303,7 +303,7 @@ try {
 			else
 				expr += X[nodes[l.g.source(in)]][l.n];		
 		}
-		model.addConstr(expr == 1, "Out_"+to_string(nodes[n]));
+		model.addConstr(expr == 1, "In_"+to_string(nodes[n]));
 	}		
 	
 /*	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
