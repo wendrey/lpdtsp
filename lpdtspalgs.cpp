@@ -250,7 +250,7 @@ try {
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		i = nodes[l.g.source(e)];
 		if (l.g.target(e) != l.depot)
-			j = nodes[l.g.target(out)];
+			j = nodes[l.g.target(e)];
 		else
 			j = l.n;
 		model.addConstr(A[i][j] <= l.capacity * X[i][j], "");
