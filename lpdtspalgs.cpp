@@ -249,7 +249,7 @@ try {
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		i = nodes[l.g.source(e)];
-		if (l.g.target(out) != l.depot)
+		if (l.g.target(e) != l.depot)
 			j = nodes[l.g.target(out)];
 		else
 			j = l.n;
