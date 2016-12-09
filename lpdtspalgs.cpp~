@@ -248,12 +248,10 @@ try {
 	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
-		i = nodes[l.g.source(e)];
 		if (l.g.target(e) != l.depot)
-			j = nodes[l.g.target(e)];
+			model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]], "");
 		else
-			j = l.n;
-		model.addConstr(A[i][j] <= l.capacity * X[i][j], "");
+			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "");
 	}
 	
 	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
@@ -304,12 +302,11 @@ try {
 	
 	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
-	for (i = 1; i <= l.n; i++)
-		for (j = 1; j <= l.n; j++)
-			if (i != j)
-				model.addConstr(U[i] - U[j] + (l.n + 1) * X[i][j] <= l.n, "");
+	for (ArcIt e(l.g); e != INVALID; ++e)
+		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
+			model.addConstr(U[i] - U[j] + (l.n + 1) * X[i][j] <= l.n, "");
 	
-	// Objetivo: Minimizar C
+/*	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
