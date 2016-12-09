@@ -174,7 +174,7 @@ try {
 	// Inicializa o modelo
 
 	lowerBound = 1;
-	upperBound = sol.cost + l.n;
+	upperBound = sol.cost + 1;
 	GRBEnv env = GRBEnv();
 	GRBModel model = GRBModel(env);
 	model.set(GRB_StringAttr_ModelName, ":::LpdTsp:::");
