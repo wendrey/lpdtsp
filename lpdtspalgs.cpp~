@@ -219,12 +219,6 @@ try {
 	for (i = 0; i <= l.n; i++)
 		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
-	// Objetivo: Minimizar C
-	
-	model.update();
-	GRBLinExpr obj = C[l.n];
-	model.setObjective(obj, GRB_MINIMIZE);
-
 	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
@@ -233,6 +227,8 @@ try {
 				i = nodes[l.g.source(in)];
 				j = nodes[l.g.target(out)];
 				k = nodes[n];
+				if (l.g.target(out) == l.depot)
+					j = l.n;
 				GRBLinExpr expr = (2 - X[i][k] - X[k][j]) * M;
 				if (l.s[n] > 0) {
 					double b = l.items[l.s[n]-1].w;
@@ -309,8 +305,10 @@ try {
 			if (i != j)
 				model.addConstr(U[i] - U[j] + (l.n + 1) * X[i][j] <= l.n, "");
 	
-	// Objetivo: Min C
-		
+	// Objetivo: Minimizar C
+	
+	GRBLinExpr obj = C[l.n];
+	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
 	model.optimize();
 
