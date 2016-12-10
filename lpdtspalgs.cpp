@@ -159,7 +159,7 @@ try {
 	double lowerBound, upperBound;
 	LpdTspSolution sol;
 
-	// Associa um vertice a uma posicao
+	// Associa um vértice a uma posicao
 
 	k = 0;
 	DNodeIntMap nodes(l.g);
@@ -186,7 +186,7 @@ try {
 	GRBVar* C = new GRBVar[l.n + 1];
 
 	for (i = 0; i <= l.n; i++)
-		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "C_"+to_string(i));
+		C[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
 
 	// Aij é o peso dos itens carregados na aresta (i,j)
 
@@ -197,9 +197,9 @@ try {
 
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.target(e) != l.depot)
-			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "A_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
+			A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
 		else
-			A[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "A_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
+			A[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_CONTINUOUS, "");
 
 	// Xij = 1 se a aresta (i,j) é usada, Xij = 0 caso contrário
 
@@ -210,18 +210,18 @@ try {
 		
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.target(e) != l.depot) 
-			X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "X_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
+			X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");
 		else
-			X[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "X_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));			
+			X[nodes[l.g.source(e)]][l.n] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_BINARY, "");			
 		
 	// Ui é auxiliar usada para que haja apena um tour
 	
 	GRBVar* U = new GRBVar[l.n + 1];
 	
 	for (i = 0; i <= l.n; i++)
-		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "U_"+to_string(i));
+		U[i] = model.addVar(0.0, GRB_INFINITY, 0.0, GRB_INTEGER, "");
 		
-	// (1): Sum de i = 1 até n de Aij - Sum de k = 1 até n de Ajk = Bj, para 1 <= j <= n 
+	// (1) Restrição do fluxo de carga: Akj - Aij = Bj, para todo i,j,k 
 	
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		for (InArcIt in(l.g, n); in != INVALID; ++in) {
@@ -237,52 +237,52 @@ try {
 				GRBLinExpr expr = (2 - X[i][k] - X[k][j]) * M;
 				if (l.s[n] > 0) {
 					double b = l.items[l.s[n]-1].w;
-					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
-					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "");
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "");
 				}
 				if (l.t[n] > 0) {
 					double b = -l.items[l.t[n]-1].w;
-					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
-					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "");
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "");
 				}
 			}
 		}
 	}
 	
-	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+	// (2) Restrição de capacidade: Aij <= Capacidade, para todo i,j 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot)
-			model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
+			model.addConstr(A[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.capacity * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]], "");
 		else
-			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
+			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "");
 	}
 	
 	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
-		model.addConstr(A[nodes[l.g.source(e)]][l.n] == 0, "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
+		model.addConstr(A[nodes[l.g.source(e)]][l.n] == 0, "");
 
 	for (OutArcIt e(l.g, l.depot); e != INVALID; ++e)
-		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "Capacidade_"+to_string(nodes[l.depot])+"_"+to_string(nodes[l.g.source(e)]));
+		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "");
 	
-	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+	// (3) Restrição de custo: Cj >= Ci + Wij, para todo i,j 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
 			GRBLinExpr expr = (1 - X[nodes[l.g.source(e)]][nodes[l.g.target(e)]]) * M;
-			model.addConstr(C[nodes[l.g.target(e)]] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "Custo_"+to_string(nodes[l.g.target(e)]));	
+			model.addConstr(C[nodes[l.g.target(e)]] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "");	
 		}
 		else {
 			GRBLinExpr expr = (1 - X[nodes[l.g.source(e)]][l.n]) * M;
-			model.addConstr(C[l.n] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "Custo_"+to_string(l.n));				
+			model.addConstr(C[l.n] + expr >= C[nodes[l.g.source(e)]] + l.weight[e], "");				
 		}
 	}
 			
-	// (4): Ct > Cs, para todo par (s,t) de um item
+	// (4) Restrição de ordem pickup-delivery: Ct > Cs, para todo par (s,t) de um item
 	
 	for (k = 0; k < l.k; k++)
-		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "Item_"+to_string(k+1)+"_"+to_string(nodes[l.items[k].s])+"_"+to_string(nodes[l.items[k].t]));
+		model.addConstr(C[nodes[l.items[k].s]] <= C[nodes[l.items[k].t]], "");
 	
-	// (5): Sum de j = 1 até n de Xij = 1, para 1 <= i <= n
+	// (5) Restrição de grau do vértice: Sum j de Xij = 1, para todo i
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
@@ -292,10 +292,10 @@ try {
 			else
 				expr += X[nodes[n]][l.n];
 		}
-		model.addConstr(expr == 1, "Out_"+to_string(nodes[n]));
+		model.addConstr(expr == 1, "");
 	}		
 		
-	// (6): Sum de i = 1 até n de Xij = 1, para 1 <= j <= n
+	// (6) Restrição de grau do vértice: Sum i de Xij = 1, para todo j
 
 	for (DNodeIt n(l.g); n != INVALID; ++n) {
 		GRBLinExpr expr = 0;
@@ -305,21 +305,20 @@ try {
 			else
 				expr += X[nodes[l.g.source(in)]][l.n];		
 		}
-		model.addConstr(expr == 1, "In_"+to_string(nodes[n]));
+		model.addConstr(expr == 1, "");
 	}		
 	
-	// (7): Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
+	// (7) Restrição de tour: Ui - Uj + nXij <= n - 1, para i != j, 2 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e)
 		if (l.g.source(e) != l.depot && l.g.target(e) != l.depot)
-		model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "Tour_"+to_string(nodes[l.g.source(e)])+"_"+to_string(nodes[l.g.target(e)]));
+		model.addConstr(U[nodes[l.g.source(e)]] - U[nodes[l.g.target(e)]] + (l.n + 1) * X[nodes[l.g.source(e)]][nodes[l.g.target(e)]] <= l.n, "");
 	
 	// Objetivo: Minimizar C
 	
 	GRBLinExpr obj = C[l.n];
 	model.setObjective(obj, GRB_MINIMIZE);		
 	model.update();
-	model.write("debug.lp");
 	model.optimize();
 
 	// Atribui solução
