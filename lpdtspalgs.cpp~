@@ -242,8 +242,8 @@ try {
 				}
 				if (l.t[n] > 0) {
 					double b = -l.items[l.t[n]-1].w;
-//					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
-					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
+					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
+//					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
 				}
 			}
 		}
