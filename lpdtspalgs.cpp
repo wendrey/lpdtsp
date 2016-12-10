@@ -237,9 +237,8 @@ try {
 				GRBLinExpr expr = (2 - X[i][k] - X[k][j]) * M;
 				if (l.s[n] > 0) {
 					double b = l.items[l.s[n]-1].w;
-					model.addConstr(A[k][j] - A[i][k] >= b * X[i][k] * X[k][j], "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
 //					model.addConstr(A[k][j] - A[i][k] + expr >= b, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
-//					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
+					model.addConstr(A[k][j] - A[i][k] <= b + expr, "Fluxo_"+to_string(i)+"_"+to_string(k)+"_"+to_string(j));
 				}
 				else if (l.t[n] > 0) {
 					double b = -l.items[l.t[n]-1].w;
@@ -250,7 +249,7 @@ try {
 		}
 	}
 	
-	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
+/*	// (2): Aij <= Capacidade, para 1 <= i,j <= n 
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot)
@@ -259,13 +258,13 @@ try {
 			model.addConstr(A[nodes[l.g.source(e)]][l.n] <= l.capacity * X[nodes[l.g.source(e)]][l.n], "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 	}
 	
-/*	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
+	for (InArcIt e(l.g, l.depot); e != INVALID; ++e)
 		model.addConstr(A[nodes[l.g.source(e)]][l.n] == 0, "Capacidade_"+to_string(nodes[l.g.source(e)])+"_"+to_string(l.n));
 
 	for (OutArcIt e(l.g, l.depot); e != INVALID; ++e)
 		model.addConstr(A[nodes[l.depot]][nodes[l.g.target(e)]] == 0, "Capacidade_"+to_string(nodes[l.depot])+"_"+to_string(nodes[l.g.source(e)]));
-*/	
-	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
+	
+*/	// (3): Cj >= Ci + Wij, para 1 <= i,j <= n
 	
 	for (ArcIt e(l.g); e != INVALID; ++e) {
 		if (l.g.target(e) != l.depot) {
